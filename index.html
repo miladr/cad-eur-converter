@@ -2,18 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="CAD to EUR">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#ffffff">
-  <title>CAD to EUR Ontario</title>
+  <link rel="manifest" href="manifest.json">
+  <title>CAD to EUR</title>
   <style>
     * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       max-width: 420px;
       margin: 0 auto;
-      padding: 32px 20px;
+      padding: calc(28px + env(safe-area-inset-top)) 20px calc(28px + env(safe-area-inset-bottom));
       color: #111;
       background: #fff;
     }
@@ -33,6 +37,8 @@
       font-size: 24px;
       border: 1px solid #bbb;
       border-radius: 10px;
+      background: #fff;
+      color: #111;
       appearance: none;
     }
     input:focus {
@@ -110,6 +116,12 @@
     priceInput.addEventListener('input', convertPrice);
     priceInput.addEventListener('change', convertPrice);
     convertPrice();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
   </script>
 </body>
 </html>
