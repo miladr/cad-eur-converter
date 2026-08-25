@@ -1,0 +1,10 @@
+{
+  "name": "CAD to EUR Ontario",
+  "short_name": "CAD to EUR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "description": "Convert Canadian shop prices to euros with Ontario tax included."
+}
