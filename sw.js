@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cad-eur-v2';
+const CACHE_NAME = 'cad-eur-v3';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', event => {
