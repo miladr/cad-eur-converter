@@ -60,6 +60,28 @@
       font-size: 13px;
       color: #666;
     }
+    .history {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e5e5;
+    }
+    .history h2 {
+      font-size: 17px;
+      margin: 0 0 12px;
+    }
+    .history-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .history-item:last-child {
+      border-bottom: 0;
+    }
+    .history-empty {
+      color: #777;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -68,11 +90,10 @@
   <label for="price">Price in CAD</label>
   <input
     id="price"
-    type="number"
-    min="0"
-    step="0.01"
+    type="text"
     inputmode="decimal"
-    placeholder="79.99"
+    autocomplete="off"
+    placeholder="79,99"
     autofocus
   >
 
@@ -83,22 +104,85 @@
 
   <div class="note">Ontario tax: 13% · CAD to EUR: 0.62</div>
 
+  <section class="history" aria-labelledby="historyTitle">
+    <h2 id="historyTitle">Recent conversions</h2>
+    <div id="historyList" class="history-empty">No conversions yet.</div>
+  </section>
+
   <script>
     const TAX_RATE = 0.13;
     const EXCHANGE_RATE = 0.62;
+    const HISTORY_KEY = 'cadEurHistory';
+    const HISTORY_LIMIT = 5;
 
     const priceInput = document.getElementById('price');
     const result = document.getElementById('result');
+    const historyList = document.getElementById('historyList');
+
+    let saveTimer = null;
+    let lastSavedInput = '';
+
+    function parsePrice(value) {
+      const normalized = value.trim().replace(',', '.');
+      if (!/^\d*(\.\d{0,2})?$/.test(normalized)) return NaN;
+      if (normalized === '' || normalized === '.') return NaN;
+      return Number(normalized);
+    }
+
+    function formatCad(value) {
+      return value.toFixed(2).replace('.', ',');
+    }
+
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function renderHistory() {
+      const history = getHistory();
+
+      if (!history.length) {
+        historyList.className = 'history-empty';
+        historyList.textContent = 'No conversions yet.';
+        return;
+      }
+
+      historyList.className = '';
+      historyList.innerHTML = history.map(item =>
+        '<div class="history-item">' +
+          'C$' + item.cad + ' → €' + item.withoutTax + ' without tax · €' + item.withTax + ' with tax' +
+        '</div>'
+      ).join('');
+    }
+
+    function saveHistory(priceCAD, withoutTaxEUR, withTaxEUR) {
+      const key = priceCAD.toFixed(2);
+      if (lastSavedInput === key) return;
+
+      const history = getHistory();
+      history.unshift({
+        cad: formatCad(priceCAD),
+        withoutTax: withoutTaxEUR.toFixed(2),
+        withTax: withTaxEUR.toFixed(2)
+      });
+
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, HISTORY_LIMIT)));
+      lastSavedInput = key;
+      renderHistory();
+    }
 
     function convertPrice() {
-      const value = priceInput.value.trim();
+      const value = priceInput.value;
 
-      if (value === '') {
+      if (value.trim() === '') {
         result.innerHTML = 'Without tax: €0.00<br>With tax: €0.00';
         return;
       }
 
-      const priceCAD = parseFloat(value);
+      const priceCAD = parsePrice(value);
 
       if (!Number.isFinite(priceCAD) || priceCAD < 0) {
         result.innerHTML = 'Without tax: €0.00<br>With tax: €0.00';
@@ -111,10 +195,25 @@
       result.innerHTML =
         'Without tax: €' + withoutTaxEUR.toFixed(2) +
         '<br>With tax: €' + withTaxEUR.toFixed(2);
+
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(function () {
+        saveHistory(priceCAD, withoutTaxEUR, withTaxEUR);
+      }, 700);
     }
 
     priceInput.addEventListener('input', convertPrice);
-    priceInput.addEventListener('change', convertPrice);
+    priceInput.addEventListener('change', function () {
+      convertPrice();
+      const priceCAD = parsePrice(priceInput.value);
+      if (Number.isFinite(priceCAD)) {
+        const withoutTaxEUR = priceCAD * EXCHANGE_RATE;
+        const withTaxEUR = priceCAD * (1 + TAX_RATE) * EXCHANGE_RATE;
+        saveHistory(priceCAD, withoutTaxEUR, withTaxEUR);
+      }
+    });
+
+    renderHistory();
     convertPrice();
 
     if ('serviceWorker' in navigator) {
