@@ -1,5 +1,5 @@
-const CACHE_NAME = 'cad-eur-v3';
-const ASSETS = ['./', './index.html', './manifest.json'];
+const CACHE_NAME = 'toronto-tools-v1.1.0';
+const ASSETS = ['./', './index.html', './pitcher.html', './manifest.json'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
