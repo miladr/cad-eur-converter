@@ -21,141 +21,41 @@
       color: #111;
       background: #fff;
     }
-    .topbar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+    .topbar { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
     .menu-button {
-      width: 44px;
-      height: 44px;
-      border: 1px solid #d8d8d8;
-      border-radius: 10px;
-      background: #fff;
-      color: #111;
-      font-size: 25px;
-      line-height: 1;
-      cursor: pointer;
+      width:44px; height:44px; border:1px solid #d8d8d8; border-radius:10px;
+      background:#fff; color:#111; font-size:25px; line-height:1; cursor:pointer;
     }
-    h1 {
-      font-size: 28px;
-      margin: 0;
-    }
-    .menu {
-      display: none;
-      margin: -10px 0 22px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .menu.open { display: block; }
-    .menu a {
-      display: block;
-      padding: 14px 16px;
-      color: #111;
-      text-decoration: none;
-      border-bottom: 1px solid #eee;
-      font-size: 16px;
-    }
-    .menu a:last-child { border-bottom: 0; }
-    .menu a.active { font-weight: 700; background: #f5f5f5; }
-    .panel {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 650;
-      margin-bottom: 8px;
-    }
-    input[type="file"], select, input[type="range"], button.action {
-      width: 100%;
-      min-height: 44px;
-      font-size: 16px;
-    }
-    input[type="file"] { padding: 8px 0; }
-    select {
-      padding: 10px 12px;
-      border: 1px solid #bbb;
-      border-radius: 10px;
-      background: #fff;
-      color: #111;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .file-name {
-      margin-top: 8px;
-      font-size: 13px;
-      color: #666;
-      overflow-wrap: anywhere;
-    }
+    h1 { font-size:28px; margin:0; }
+    .menu { display:none; margin:-10px 0 22px; border:1px solid #ddd; border-radius:12px; overflow:hidden; }
+    .menu.open { display:block; }
+    .menu a { display:block; padding:14px 16px; color:#111; text-decoration:none; border-bottom:1px solid #eee; font-size:16px; }
+    .menu a:last-child { border-bottom:0; }
+    .menu a.active { font-weight:700; background:#f5f5f5; }
+    .panel { border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; }
+    label { display:block; font-size:14px; font-weight:650; margin-bottom:8px; }
+    input[type="file"], select, input[type="range"], button.action { width:100%; min-height:44px; font-size:16px; }
+    input[type="file"] { padding:8px 0; }
+    select { padding:10px 12px; border:1px solid #bbb; border-radius:10px; background:#fff; color:#111; }
+    input[type="range"] { accent-color:#111; }
+    .file-name { margin-top:8px; font-size:13px; color:#666; overflow-wrap:anywhere; }
+    .pitch-range { margin-top:18px; }
+    .slider-labels { display:flex; justify-content:space-between; gap:8px; margin-top:2px; color:#777; font-size:11px; }
+    .slider-labels span:nth-child(2) { color:#111; font-weight:700; }
     .shift-display {
-      padding: 15px;
-      margin: 14px 0;
-      border-radius: 10px;
-      background: #f5f5f5;
-      text-align: center;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1.45;
+      padding:15px; margin:16px 0; border-radius:10px; background:#f5f5f5;
+      text-align:center; font-size:19px; font-weight:700; line-height:1.45;
     }
-    .controls {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    button.action {
-      border: 1px solid #bbb;
-      border-radius: 10px;
-      background: #fff;
-      color: #111;
-      font-weight: 650;
-      padding: 11px 12px;
-    }
-    button.primary {
-      background: #111;
-      color: #fff;
-      border-color: #111;
-    }
-    button:disabled { opacity: 0.45; }
-    .time-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #666;
-      margin-top: 4px;
-    }
-    .status {
-      min-height: 20px;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #666;
-    }
-    .note {
-      font-size: 12px;
-      color: #777;
-      line-height: 1.45;
-      margin-top: 12px;
-    }
-    .version {
-      margin-top: 30px;
-      padding-top: 14px;
-      border-top: 1px solid #eee;
-      text-align: center;
-      font-size: 12px;
-      color: #999;
-    }
-    @media (max-width: 340px) {
-      .grid, .controls { grid-template-columns: 1fr; }
-    }
+    .shift-detail { display:block; margin-top:3px; font-size:13px; font-weight:500; color:#666; }
+    .controls { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    button.action { border:1px solid #bbb; border-radius:10px; background:#fff; color:#111; font-weight:650; padding:11px 12px; }
+    button.primary { background:#111; color:#fff; border-color:#111; }
+    button:disabled { opacity:.45; }
+    .time-row { display:flex; justify-content:space-between; font-size:12px; color:#666; margin-top:4px; }
+    .status { min-height:20px; margin-top:10px; font-size:13px; color:#666; }
+    .note { font-size:12px; color:#777; line-height:1.45; margin-top:12px; }
+    .version { margin-top:30px; padding-top:14px; border-top:1px solid #eee; text-align:center; font-size:12px; color:#999; }
+    @media (max-width:340px) { .controls { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -176,34 +76,20 @@
   </section>
 
   <section class="panel">
-    <div class="grid">
-      <div>
-        <label for="originalNote">Original note</label>
-        <select id="originalNote">
-          <option value="0">C</option><option value="1">C♯ / D♭</option><option value="2">D</option><option value="3">D♯ / E♭</option>
-          <option value="4">E</option><option value="5">F</option><option value="6">F♯ / G♭</option><option value="7">G</option>
-          <option value="8">G♯ / A♭</option><option value="9">A</option><option value="10">A♯ / B♭</option><option value="11">B</option>
-        </select>
-      </div>
-      <div>
-        <label for="targetNote">Target note</label>
-        <select id="targetNote">
-          <option value="0">C</option><option value="1">C♯ / D♭</option><option value="2">D</option><option value="3">D♯ / E♭</option>
-          <option value="4">E</option><option value="5">F</option><option value="6">F♯ / G♭</option><option value="7">G</option>
-          <option value="8">G♯ / A♭</option><option value="9">A</option><option value="10">A♯ / B♭</option><option value="11">B</option>
-        </select>
-      </div>
-    </div>
-
-    <label for="octave">Octave shift</label>
-    <select id="octave">
-      <option value="-12">-1 octave</option>
-      <option value="0" selected>Same octave</option>
-      <option value="12">+1 octave</option>
+    <label for="originalNote">Original note</label>
+    <select id="originalNote">
+      <option value="0">C</option><option value="1">C♯ / D♭</option><option value="2">D</option><option value="3">D♯ / E♭</option>
+      <option value="4">E</option><option value="5">F</option><option value="6">F♯ / G♭</option><option value="7">G</option>
+      <option value="8">G♯ / A♭</option><option value="9">A</option><option value="10">A♯ / B♭</option><option value="11">B</option>
     </select>
 
-    <div id="shiftDisplay" class="shift-display">C → C<br>0 semitones</div>
+    <div class="pitch-range">
+      <label for="pitchSlider">Pitch</label>
+      <input id="pitchSlider" type="range" min="-24" max="24" step="1" value="0" aria-describedby="shiftDisplay">
+      <div class="slider-labels"><span>2 octaves lower</span><span>Original</span><span>2 octaves higher</span></div>
+    </div>
 
+    <div id="shiftDisplay" class="shift-display">C → C<span class="shift-detail">Original pitch · 0 semitones</span></div>
     <button id="resetPitch" class="action" type="button">Original pitch</button>
   </section>
 
@@ -221,10 +107,10 @@
     <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
 
     <div id="status" class="status">Choose an audio file to begin.</div>
-    <div class="note">Pitch changes live while the song plays. The effect changes musical pitch without intentionally changing playback tempo.</div>
+    <div class="note">The slider moves in exact semitone steps. Its center is always the selected original note. Slide left for lower notes and right for higher notes.</div>
   </section>
 
-  <div class="version">Version 1.1.0</div>
+  <div class="version">Version 1.1.1</div>
 
   <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
   <script>
@@ -233,8 +119,7 @@
     const audioFile = document.getElementById('audioFile');
     const fileName = document.getElementById('fileName');
     const originalNote = document.getElementById('originalNote');
-    const targetNote = document.getElementById('targetNote');
-    const octave = document.getElementById('octave');
+    const pitchSlider = document.getElementById('pitchSlider');
     const shiftDisplay = document.getElementById('shiftDisplay');
     const resetPitch = document.getElementById('resetPitch');
     const playPause = document.getElementById('playPause');
@@ -257,39 +142,42 @@
     let playing = false;
     let rafId = null;
 
-    function toggleMenu() {
+    menuButton.addEventListener('click', function () {
       const open = menu.classList.toggle('open');
       menuButton.setAttribute('aria-expanded', String(open));
       menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+
+    function semitoneShift() { return Number(pitchSlider.value); }
+
+    function targetNoteIndex() {
+      const raw = Number(originalNote.value) + semitoneShift();
+      return ((raw % 12) + 12) % 12;
     }
 
-    menuButton.addEventListener('click', toggleMenu);
-
-    function signedSemitoneShift() {
-      const from = Number(originalNote.value);
-      const to = Number(targetNote.value);
-      let interval = to - from;
-      if (interval > 6) interval -= 12;
-      if (interval < -6) interval += 12;
-      return interval + Number(octave.value);
+    function octaveText(shift) {
+      const abs = Math.abs(shift);
+      if (shift === 0) return 'Original pitch';
+      if (abs === 12) return shift > 0 ? '1 octave higher' : '1 octave lower';
+      if (abs === 24) return shift > 0 ? '2 octaves higher' : '2 octaves lower';
+      const octaves = Math.trunc(abs / 12);
+      if (!octaves) return shift > 0 ? 'Higher' : 'Lower';
+      return octaves + ' octave' + (octaves === 1 ? '' : 's') + (shift > 0 ? ' higher' : ' lower');
     }
 
     function updatePitch() {
-      const semitones = signedSemitoneShift();
+      const shift = semitoneShift();
       const fromName = NOTE_NAMES[Number(originalNote.value)];
-      const toName = NOTE_NAMES[Number(targetNote.value)];
-      const sign = semitones > 0 ? '+' : '';
-      shiftDisplay.innerHTML = fromName + ' → ' + toName + '<br>' + sign + semitones + ' semitone' + (Math.abs(semitones) === 1 ? '' : 's');
-      if (pitchShift) pitchShift.pitch = semitones;
+      const toName = NOTE_NAMES[targetNoteIndex()];
+      const sign = shift > 0 ? '+' : '';
+      shiftDisplay.innerHTML = fromName + ' → ' + toName + '<span class="shift-detail">' + octaveText(shift) + ' · ' + sign + shift + ' semitone' + (Math.abs(shift) === 1 ? '' : 's') + '</span>';
+      if (pitchShift) pitchShift.pitch = shift;
     }
 
     originalNote.addEventListener('change', updatePitch);
-    targetNote.addEventListener('change', updatePitch);
-    octave.addEventListener('change', updatePitch);
-
+    pitchSlider.addEventListener('input', updatePitch);
     resetPitch.addEventListener('click', function () {
-      targetNote.value = originalNote.value;
-      octave.value = '0';
+      pitchSlider.value = '0';
       updatePitch();
     });
 
@@ -302,15 +190,13 @@
 
     function currentPosition() {
       if (!playing) return offset;
-      const elapsed = Tone.now() - startedAt;
-      return Math.min(offset + elapsed, loadedDuration);
+      return Math.min(offset + (Tone.now() - startedAt), loadedDuration);
     }
 
     function renderPosition() {
       const pos = currentPosition();
       currentTimeEl.textContent = formatTime(pos);
       if (loadedDuration > 0) seek.value = String(Math.round((pos / loadedDuration) * 1000));
-
       if (playing && pos >= loadedDuration - 0.03) {
         playing = false;
         offset = 0;
@@ -319,22 +205,18 @@
         currentTimeEl.textContent = '0:00';
         status.textContent = 'Finished.';
       }
-
       if (playing) rafId = requestAnimationFrame(renderPosition);
     }
 
     async function buildAudioGraph(url) {
-      if (player) {
-        try { player.stop(); } catch (e) {}
-        player.dispose();
-      }
+      if (player) { try { player.stop(); } catch (e) {} player.dispose(); }
       if (pitchShift) pitchShift.dispose();
       if (volumeNode) volumeNode.dispose();
 
-      pitchShift = new Tone.PitchShift({ pitch: signedSemitoneShift(), windowSize: 0.08, delayTime: 0, feedback: 0 });
+      pitchShift = new Tone.PitchShift({ pitch: semitoneShift(), windowSize: 0.08, delayTime: 0, feedback: 0 });
       volumeNode = new Tone.Volume(Tone.gainToDb(Number(volume.value))).toDestination();
       pitchShift.connect(volumeNode);
-      player = new Tone.Player({ url: url, autostart: false, fadeIn: 0.01, fadeOut: 0.01 }).connect(pitchShift);
+      player = new Tone.Player({ url, autostart:false, fadeIn:0.01, fadeOut:0.01 }).connect(pitchShift);
       await Tone.loaded();
       loadedDuration = player.buffer.duration || 0;
       offset = 0;
@@ -349,7 +231,6 @@
     audioFile.addEventListener('change', async function () {
       const file = audioFile.files && audioFile.files[0];
       if (!file) return;
-
       if (objectUrl) URL.revokeObjectURL(objectUrl);
       objectUrl = URL.createObjectURL(file);
       fileName.textContent = file.name;
@@ -357,7 +238,6 @@
       playPause.disabled = true;
       restart.disabled = true;
       seek.disabled = true;
-
       try {
         if (!window.Tone) throw new Error('Audio engine did not load.');
         await buildAudioGraph(objectUrl);
@@ -371,7 +251,6 @@
     playPause.addEventListener('click', async function () {
       if (!player || !loadedDuration) return;
       await Tone.start();
-
       if (playing) {
         offset = currentPosition();
         player.stop();
@@ -381,7 +260,6 @@
         if (rafId) cancelAnimationFrame(rafId);
         return;
       }
-
       if (offset >= loadedDuration) offset = 0;
       startedAt = Tone.now();
       player.start(undefined, offset);
@@ -442,9 +320,7 @@
     updatePitch();
 
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('./sw.js');
-      });
+      window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js'); });
     }
   </script>
 </body>
