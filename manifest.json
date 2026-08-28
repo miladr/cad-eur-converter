@@ -1,10 +1,10 @@
 {
-  "name": "CAD to EUR Ontario",
-  "short_name": "CAD to EUR",
-  "start_url": "./",
+  "name": "Toronto Tools",
+  "short_name": "Toronto Tools",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
-  "description": "Convert Canadian shop prices to euros with Ontario tax included."
+  "description": "Toronto travel tools with CAD to EUR conversion and a live audio pitch shifter."
 }
