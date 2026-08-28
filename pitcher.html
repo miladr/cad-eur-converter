@@ -107,10 +107,10 @@
     <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
 
     <div id="status" class="status">Choose an audio file to begin.</div>
-    <div class="note">The slider moves in exact semitone steps. Its center is always the selected original note. Slide left for lower notes and right for higher notes.</div>
+    <div class="note">The slider moves in exact semitone steps. Its center is always the selected original note. Slide left for lower notes and right for higher notes. While playing, the app asks iPhone to keep the screen awake.</div>
   </section>
 
-  <div class="version">Version 1.1.1</div>
+  <div class="version">Version 1.1.2</div>
 
   <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
   <script>
@@ -141,11 +141,34 @@
     let startedAt = 0;
     let playing = false;
     let rafId = null;
+    let wakeLock = null;
 
     menuButton.addEventListener('click', function () {
       const open = menu.classList.toggle('open');
       menuButton.setAttribute('aria-expanded', String(open));
       menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+
+    async function requestWakeLock() {
+      if (!('wakeLock' in navigator) || document.visibilityState !== 'visible' || !playing) return;
+      try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', function () {
+          wakeLock = null;
+        });
+      } catch (error) {
+        console.warn('Wake Lock unavailable:', error);
+      }
+    }
+
+    async function releaseWakeLock() {
+      if (!wakeLock) return;
+      try { await wakeLock.release(); } catch (error) {}
+      wakeLock = null;
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && playing) requestWakeLock();
     });
 
     function semitoneShift() { return Number(pitchSlider.value); }
@@ -204,6 +227,7 @@
         seek.value = '0';
         currentTimeEl.textContent = '0:00';
         status.textContent = 'Finished.';
+        releaseWakeLock();
       }
       if (playing) rafId = requestAnimationFrame(renderPosition);
     }
@@ -231,6 +255,7 @@
     audioFile.addEventListener('change', async function () {
       const file = audioFile.files && audioFile.files[0];
       if (!file) return;
+      await releaseWakeLock();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
       objectUrl = URL.createObjectURL(file);
       fileName.textContent = file.name;
@@ -258,6 +283,7 @@
         playPause.textContent = 'Play';
         status.textContent = 'Paused.';
         if (rafId) cancelAnimationFrame(rafId);
+        await releaseWakeLock();
         return;
       }
       if (offset >= loadedDuration) offset = 0;
@@ -266,6 +292,7 @@
       playing = true;
       playPause.textContent = 'Pause';
       status.textContent = 'Playing.';
+      await requestWakeLock();
       renderPosition();
     });
 
@@ -282,10 +309,12 @@
         player.start(undefined, 0);
         playing = true;
         playPause.textContent = 'Pause';
+        await requestWakeLock();
         renderPosition();
       } else {
         playing = false;
         playPause.textContent = 'Play';
+        await releaseWakeLock();
       }
       status.textContent = 'Restarted.';
     });
@@ -306,6 +335,7 @@
         startedAt = Tone.now();
         player.start(undefined, offset);
         playing = true;
+        await requestWakeLock();
         renderPosition();
       }
       currentTimeEl.textContent = formatTime(offset);
@@ -316,6 +346,8 @@
       const value = Number(volume.value);
       volumeNode.volume.value = value <= 0 ? -Infinity : Tone.gainToDb(value);
     });
+
+    window.addEventListener('pagehide', function () { releaseWakeLock(); });
 
     updatePitch();
 
