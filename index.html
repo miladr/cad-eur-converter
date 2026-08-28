@@ -21,108 +21,25 @@
       color: #111;
       background: #fff;
     }
-    .topbar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .menu-button {
-      width: 44px;
-      height: 44px;
-      border: 1px solid #d8d8d8;
-      border-radius: 10px;
-      background: #fff;
-      color: #111;
-      font-size: 25px;
-      line-height: 1;
-      cursor: pointer;
-    }
-    h1 {
-      font-size: 28px;
-      margin: 0;
-    }
-    .menu {
-      display: none;
-      margin: -10px 0 22px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .menu.open { display: block; }
-    .menu a {
-      display: block;
-      padding: 14px 16px;
-      color: #111;
-      text-decoration: none;
-      border-bottom: 1px solid #eee;
-      font-size: 16px;
-    }
-    .menu a:last-child { border-bottom: 0; }
-    .menu a.active { font-weight: 700; background: #f5f5f5; }
-    label {
-      display: block;
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    input {
-      width: 100%;
-      padding: 16px;
-      font-size: 24px;
-      border: 1px solid #bbb;
-      border-radius: 10px;
-      background: #fff;
-      color: #111;
-      appearance: none;
-    }
-    input:focus {
-      outline: 2px solid #111;
-      outline-offset: 1px;
-    }
-    #result {
-      margin-top: 24px;
-      padding: 18px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 23px;
-      line-height: 1.7;
-      font-weight: 700;
-      min-height: 94px;
-    }
-    .note {
-      margin-top: 14px;
-      font-size: 13px;
-      color: #666;
-    }
-    .history {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e5e5;
-    }
-    .history h2 {
-      font-size: 17px;
-      margin: 0 0 12px;
-    }
-    .history-item {
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 15px;
-      line-height: 1.5;
-    }
-    .history-item:last-child { border-bottom: 0; }
-    .history-empty {
-      color: #777;
-      font-size: 14px;
-    }
-    .version {
-      margin-top: 30px;
-      padding-top: 14px;
-      border-top: 1px solid #eee;
-      text-align: center;
-      font-size: 12px;
-      color: #999;
-    }
+    .topbar { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
+    .menu-button { width:44px; height:44px; border:1px solid #d8d8d8; border-radius:10px; background:#fff; color:#111; font-size:25px; line-height:1; cursor:pointer; }
+    h1 { font-size:28px; margin:0; }
+    .menu { display:none; margin:-10px 0 22px; border:1px solid #ddd; border-radius:12px; overflow:hidden; }
+    .menu.open { display:block; }
+    .menu a { display:block; padding:14px 16px; color:#111; text-decoration:none; border-bottom:1px solid #eee; font-size:16px; }
+    .menu a:last-child { border-bottom:0; }
+    .menu a.active { font-weight:700; background:#f5f5f5; }
+    label { display:block; font-size:15px; font-weight:600; margin-bottom:8px; }
+    input { width:100%; padding:16px; font-size:24px; border:1px solid #bbb; border-radius:10px; background:#fff; color:#111; appearance:none; }
+    input:focus { outline:2px solid #111; outline-offset:1px; }
+    #result { margin-top:24px; padding:18px; border:1px solid #ddd; border-radius:12px; font-size:23px; line-height:1.7; font-weight:700; min-height:94px; }
+    .note { margin-top:14px; font-size:13px; color:#666; }
+    .history { margin-top:30px; padding-top:20px; border-top:1px solid #e5e5e5; }
+    .history h2 { font-size:17px; margin:0 0 12px; }
+    .history-item { padding:12px 0; border-bottom:1px solid #eee; font-size:15px; line-height:1.5; }
+    .history-item:last-child { border-bottom:0; }
+    .history-empty { color:#777; font-size:14px; }
+    .version { margin-top:30px; padding-top:14px; border-top:1px solid #eee; text-align:center; font-size:12px; color:#999; }
   </style>
 </head>
 <body>
@@ -139,11 +56,7 @@
   <label for="price">Price in CAD</label>
   <input id="price" type="text" inputmode="decimal" autocomplete="off" placeholder="79,99" autofocus>
 
-  <div id="result">
-    Without tax: €0.00<br>
-    With tax: €0.00
-  </div>
-
+  <div id="result">Without tax: €0.00<br>With tax: €0.00</div>
   <div class="note">Ontario tax: 13% · CAD to EUR: 0.62</div>
 
   <section class="history" aria-labelledby="historyTitle">
@@ -151,20 +64,18 @@
     <div id="historyList" class="history-empty">No conversions yet.</div>
   </section>
 
-  <div class="version">Version 1.1.0</div>
+  <div class="version">Version 1.1.1</div>
 
   <script>
     const TAX_RATE = 0.13;
     const EXCHANGE_RATE = 0.62;
     const HISTORY_KEY = 'cadEurHistory';
     const HISTORY_LIMIT = 5;
-
     const menuButton = document.getElementById('menuButton');
     const menu = document.getElementById('menu');
     const priceInput = document.getElementById('price');
     const result = document.getElementById('result');
     const historyList = document.getElementById('historyList');
-
     let saveTimer = null;
     let lastSavedInput = '';
 
@@ -174,29 +85,18 @@
       menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     });
 
-    function normalizeInput(value) {
-      return value.trim().replace(/[\/,]/g, '.');
-    }
-
+    function normalizeInput(value) { return value.trim().replace(/[\/,]/g, '.'); }
     function parsePrice(value) {
       const normalized = normalizeInput(value);
       if (!/^\d*(\.\d{0,2})?$/.test(normalized)) return NaN;
       if (normalized === '' || normalized === '.') return NaN;
       return Number(normalized);
     }
-
-    function formatCad(value) {
-      return value.toFixed(2).replace('.', ',');
-    }
-
+    function formatCad(value) { return value.toFixed(2).replace('.', ','); }
     function getHistory() {
-      try {
-        return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-      } catch (error) {
-        return [];
-      }
+      try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+      catch (error) { return []; }
     }
-
     function renderHistory() {
       const history = getHistory();
       if (!history.length) {
@@ -205,50 +105,32 @@
         return;
       }
       historyList.className = '';
-      historyList.innerHTML = history.map(item =>
-        '<div class="history-item">C$' + item.cad + ' → €' + item.withoutTax + ' without tax · €' + item.withTax + ' with tax</div>'
-      ).join('');
+      historyList.innerHTML = history.map(item => '<div class="history-item">C$' + item.cad + ' → €' + item.withoutTax + ' without tax · €' + item.withTax + ' with tax</div>').join('');
     }
-
     function saveHistory(priceCAD, withoutTaxEUR, withTaxEUR) {
       const key = priceCAD.toFixed(2);
       if (lastSavedInput === key) return;
       const history = getHistory();
-      history.unshift({
-        cad: formatCad(priceCAD),
-        withoutTax: withoutTaxEUR.toFixed(2),
-        withTax: withTaxEUR.toFixed(2)
-      });
+      history.unshift({ cad: formatCad(priceCAD), withoutTax: withoutTaxEUR.toFixed(2), withTax: withTaxEUR.toFixed(2) });
       localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, HISTORY_LIMIT)));
       lastSavedInput = key;
       renderHistory();
     }
-
     function convertPrice() {
       const value = priceInput.value;
-      if (value.trim() === '') {
-        result.innerHTML = 'Without tax: €0.00<br>With tax: €0.00';
-        return;
-      }
+      if (value.trim() === '') { result.innerHTML = 'Without tax: €0.00<br>With tax: €0.00'; return; }
       const priceCAD = parsePrice(value);
-      if (!Number.isFinite(priceCAD) || priceCAD < 0) {
-        result.innerHTML = 'Without tax: €0.00<br>With tax: €0.00';
-        return;
-      }
+      if (!Number.isFinite(priceCAD) || priceCAD < 0) { result.innerHTML = 'Without tax: €0.00<br>With tax: €0.00'; return; }
       const withoutTaxEUR = priceCAD * EXCHANGE_RATE;
       const withTaxEUR = priceCAD * (1 + TAX_RATE) * EXCHANGE_RATE;
       result.innerHTML = 'Without tax: €' + withoutTaxEUR.toFixed(2) + '<br>With tax: €' + withTaxEUR.toFixed(2);
       clearTimeout(saveTimer);
-      saveTimer = setTimeout(function () {
-        saveHistory(priceCAD, withoutTaxEUR, withTaxEUR);
-      }, 700);
+      saveTimer = setTimeout(function () { saveHistory(priceCAD, withoutTaxEUR, withTaxEUR); }, 700);
     }
-
     priceInput.addEventListener('input', function () {
       if (priceInput.value.includes('/')) priceInput.value = priceInput.value.replace(/\//g, ',');
       convertPrice();
     });
-
     priceInput.addEventListener('change', function () {
       convertPrice();
       const priceCAD = parsePrice(priceInput.value);
@@ -258,15 +140,9 @@
         saveHistory(priceCAD, withoutTaxEUR, withTaxEUR);
       }
     });
-
     renderHistory();
     convertPrice();
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('./sw.js');
-      });
-    }
+    if ('serviceWorker' in navigator) window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js'); });
   </script>
 </body>
 </html>
