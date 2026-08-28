@@ -1,4 +1,4 @@
-const CACHE_NAME = 'toronto-tools-v1.1.0';
+const CACHE_NAME = 'toronto-tools-v1.1.1';
 const ASSETS = ['./', './index.html', './pitcher.html', './manifest.json'];
 
 self.addEventListener('install', event => {
