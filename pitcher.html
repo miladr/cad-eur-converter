@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Toronto Tools">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="manifest" href="manifest.json">
+  <title>Pitcher</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      max-width: 420px;
+      margin: 0 auto;
+      padding: calc(22px + env(safe-area-inset-top)) 20px calc(28px + env(safe-area-inset-bottom));
+      color: #111;
+      background: #fff;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .menu-button {
+      width: 44px;
+      height: 44px;
+      border: 1px solid #d8d8d8;
+      border-radius: 10px;
+      background: #fff;
+      color: #111;
+      font-size: 25px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    h1 {
+      font-size: 28px;
+      margin: 0;
+    }
+    .menu {
+      display: none;
+      margin: -10px 0 22px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .menu.open { display: block; }
+    .menu a {
+      display: block;
+      padding: 14px 16px;
+      color: #111;
+      text-decoration: none;
+      border-bottom: 1px solid #eee;
+      font-size: 16px;
+    }
+    .menu a:last-child { border-bottom: 0; }
+    .menu a.active { font-weight: 700; background: #f5f5f5; }
+    .panel {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+    input[type="file"], select, input[type="range"], button.action {
+      width: 100%;
+      min-height: 44px;
+      font-size: 16px;
+    }
+    input[type="file"] { padding: 8px 0; }
+    select {
+      padding: 10px 12px;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      background: #fff;
+      color: #111;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .file-name {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #666;
+      overflow-wrap: anywhere;
+    }
+    .shift-display {
+      padding: 15px;
+      margin: 14px 0;
+      border-radius: 10px;
+      background: #f5f5f5;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    button.action {
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      background: #fff;
+      color: #111;
+      font-weight: 650;
+      padding: 11px 12px;
+    }
+    button.primary {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+    button:disabled { opacity: 0.45; }
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .status {
+      min-height: 20px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #666;
+    }
+    .note {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.45;
+      margin-top: 12px;
+    }
+    .version {
+      margin-top: 30px;
+      padding-top: 14px;
+      border-top: 1px solid #eee;
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+    }
+    @media (max-width: 340px) {
+      .grid, .controls { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <button id="menuButton" class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+    <h1>Pitcher</h1>
+  </div>
+
+  <nav id="menu" class="menu" aria-label="App navigation">
+    <a href="./index.html">Currency Converter</a>
+    <a class="active" href="./pitcher.html" aria-current="page">Pitcher</a>
+  </nav>
+
+  <section class="panel">
+    <label for="audioFile">Choose MP3 or audio file</label>
+    <input id="audioFile" type="file" accept="audio/mpeg,audio/mp3,audio/*">
+    <div id="fileName" class="file-name">No file selected.</div>
+  </section>
+
+  <section class="panel">
+    <div class="grid">
+      <div>
+        <label for="originalNote">Original note</label>
+        <select id="originalNote">
+          <option value="0">C</option><option value="1">C♯ / D♭</option><option value="2">D</option><option value="3">D♯ / E♭</option>
+          <option value="4">E</option><option value="5">F</option><option value="6">F♯ / G♭</option><option value="7">G</option>
+          <option value="8">G♯ / A♭</option><option value="9">A</option><option value="10">A♯ / B♭</option><option value="11">B</option>
+        </select>
+      </div>
+      <div>
+        <label for="targetNote">Target note</label>
+        <select id="targetNote">
+          <option value="0">C</option><option value="1">C♯ / D♭</option><option value="2">D</option><option value="3">D♯ / E♭</option>
+          <option value="4">E</option><option value="5">F</option><option value="6">F♯ / G♭</option><option value="7">G</option>
+          <option value="8">G♯ / A♭</option><option value="9">A</option><option value="10">A♯ / B♭</option><option value="11">B</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="octave">Octave shift</label>
+    <select id="octave">
+      <option value="-12">-1 octave</option>
+      <option value="0" selected>Same octave</option>
+      <option value="12">+1 octave</option>
+    </select>
+
+    <div id="shiftDisplay" class="shift-display">C → C<br>0 semitones</div>
+
+    <button id="resetPitch" class="action" type="button">Original pitch</button>
+  </section>
+
+  <section class="panel">
+    <div class="controls">
+      <button id="playPause" class="action primary" type="button" disabled>Play</button>
+      <button id="restart" class="action" type="button" disabled>Restart</button>
+    </div>
+
+    <label for="seek" style="margin-top:16px;">Position</label>
+    <input id="seek" type="range" min="0" max="1000" value="0" step="1" disabled>
+    <div class="time-row"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+
+    <label for="volume" style="margin-top:16px;">Volume</label>
+    <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
+
+    <div id="status" class="status">Choose an audio file to begin.</div>
+    <div class="note">Pitch changes live while the song plays. The effect changes musical pitch without intentionally changing playback tempo.</div>
+  </section>
+
+  <div class="version">Version 1.1.0</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+  <script>
+    const menuButton = document.getElementById('menuButton');
+    const menu = document.getElementById('menu');
+    const audioFile = document.getElementById('audioFile');
+    const fileName = document.getElementById('fileName');
+    const originalNote = document.getElementById('originalNote');
+    const targetNote = document.getElementById('targetNote');
+    const octave = document.getElementById('octave');
+    const shiftDisplay = document.getElementById('shiftDisplay');
+    const resetPitch = document.getElementById('resetPitch');
+    const playPause = document.getElementById('playPause');
+    const restart = document.getElementById('restart');
+    const seek = document.getElementById('seek');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const volume = document.getElementById('volume');
+    const status = document.getElementById('status');
+
+    const NOTE_NAMES = ['C','C♯/D♭','D','D♯/E♭','E','F','F♯/G♭','G','G♯/A♭','A','A♯/B♭','B'];
+
+    let player = null;
+    let pitchShift = null;
+    let volumeNode = null;
+    let objectUrl = null;
+    let loadedDuration = 0;
+    let offset = 0;
+    let startedAt = 0;
+    let playing = false;
+    let rafId = null;
+
+    function toggleMenu() {
+      const open = menu.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    menuButton.addEventListener('click', toggleMenu);
+
+    function signedSemitoneShift() {
+      const from = Number(originalNote.value);
+      const to = Number(targetNote.value);
+      let interval = to - from;
+      if (interval > 6) interval -= 12;
+      if (interval < -6) interval += 12;
+      return interval + Number(octave.value);
+    }
+
+    function updatePitch() {
+      const semitones = signedSemitoneShift();
+      const fromName = NOTE_NAMES[Number(originalNote.value)];
+      const toName = NOTE_NAMES[Number(targetNote.value)];
+      const sign = semitones > 0 ? '+' : '';
+      shiftDisplay.innerHTML = fromName + ' → ' + toName + '<br>' + sign + semitones + ' semitone' + (Math.abs(semitones) === 1 ? '' : 's');
+      if (pitchShift) pitchShift.pitch = semitones;
+    }
+
+    originalNote.addEventListener('change', updatePitch);
+    targetNote.addEventListener('change', updatePitch);
+    octave.addEventListener('change', updatePitch);
+
+    resetPitch.addEventListener('click', function () {
+      targetNote.value = originalNote.value;
+      octave.value = '0';
+      updatePitch();
+    });
+
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return m + ':' + s;
+    }
+
+    function currentPosition() {
+      if (!playing) return offset;
+      const elapsed = Tone.now() - startedAt;
+      return Math.min(offset + elapsed, loadedDuration);
+    }
+
+    function renderPosition() {
+      const pos = currentPosition();
+      currentTimeEl.textContent = formatTime(pos);
+      if (loadedDuration > 0) seek.value = String(Math.round((pos / loadedDuration) * 1000));
+
+      if (playing && pos >= loadedDuration - 0.03) {
+        playing = false;
+        offset = 0;
+        playPause.textContent = 'Play';
+        seek.value = '0';
+        currentTimeEl.textContent = '0:00';
+        status.textContent = 'Finished.';
+      }
+
+      if (playing) rafId = requestAnimationFrame(renderPosition);
+    }
+
+    async function buildAudioGraph(url) {
+      if (player) {
+        try { player.stop(); } catch (e) {}
+        player.dispose();
+      }
+      if (pitchShift) pitchShift.dispose();
+      if (volumeNode) volumeNode.dispose();
+
+      pitchShift = new Tone.PitchShift({ pitch: signedSemitoneShift(), windowSize: 0.08, delayTime: 0, feedback: 0 });
+      volumeNode = new Tone.Volume(Tone.gainToDb(Number(volume.value))).toDestination();
+      pitchShift.connect(volumeNode);
+      player = new Tone.Player({ url: url, autostart: false, fadeIn: 0.01, fadeOut: 0.01 }).connect(pitchShift);
+      await Tone.loaded();
+      loadedDuration = player.buffer.duration || 0;
+      offset = 0;
+      durationEl.textContent = formatTime(loadedDuration);
+      currentTimeEl.textContent = '0:00';
+      seek.value = '0';
+      seek.disabled = false;
+      playPause.disabled = false;
+      restart.disabled = false;
+    }
+
+    audioFile.addEventListener('change', async function () {
+      const file = audioFile.files && audioFile.files[0];
+      if (!file) return;
+
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = URL.createObjectURL(file);
+      fileName.textContent = file.name;
+      status.textContent = 'Loading audio…';
+      playPause.disabled = true;
+      restart.disabled = true;
+      seek.disabled = true;
+
+      try {
+        if (!window.Tone) throw new Error('Audio engine did not load.');
+        await buildAudioGraph(objectUrl);
+        status.textContent = 'Ready.';
+      } catch (error) {
+        status.textContent = 'Could not load this audio file. Try another MP3.';
+        console.error(error);
+      }
+    });
+
+    playPause.addEventListener('click', async function () {
+      if (!player || !loadedDuration) return;
+      await Tone.start();
+
+      if (playing) {
+        offset = currentPosition();
+        player.stop();
+        playing = false;
+        playPause.textContent = 'Play';
+        status.textContent = 'Paused.';
+        if (rafId) cancelAnimationFrame(rafId);
+        return;
+      }
+
+      if (offset >= loadedDuration) offset = 0;
+      startedAt = Tone.now();
+      player.start(undefined, offset);
+      playing = true;
+      playPause.textContent = 'Pause';
+      status.textContent = 'Playing.';
+      renderPosition();
+    });
+
+    restart.addEventListener('click', async function () {
+      if (!player) return;
+      const wasPlaying = playing;
+      try { player.stop(); } catch (e) {}
+      offset = 0;
+      seek.value = '0';
+      currentTimeEl.textContent = '0:00';
+      if (wasPlaying) {
+        await Tone.start();
+        startedAt = Tone.now();
+        player.start(undefined, 0);
+        playing = true;
+        playPause.textContent = 'Pause';
+        renderPosition();
+      } else {
+        playing = false;
+        playPause.textContent = 'Play';
+      }
+      status.textContent = 'Restarted.';
+    });
+
+    seek.addEventListener('input', function () {
+      if (!loadedDuration) return;
+      currentTimeEl.textContent = formatTime((Number(seek.value) / 1000) * loadedDuration);
+    });
+
+    seek.addEventListener('change', async function () {
+      if (!player || !loadedDuration) return;
+      const newOffset = (Number(seek.value) / 1000) * loadedDuration;
+      const wasPlaying = playing;
+      try { player.stop(); } catch (e) {}
+      offset = newOffset;
+      if (wasPlaying) {
+        await Tone.start();
+        startedAt = Tone.now();
+        player.start(undefined, offset);
+        playing = true;
+        renderPosition();
+      }
+      currentTimeEl.textContent = formatTime(offset);
+    });
+
+    volume.addEventListener('input', function () {
+      if (!volumeNode) return;
+      const value = Number(volume.value);
+      volumeNode.volume.value = value <= 0 ? -Infinity : Tone.gainToDb(value);
+    });
+
+    updatePitch();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
